@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <link href="./index.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1 class="text-center font-extrabold text-indigo-600 text-2xl">Eviction App Scrapper Extension!</h1>
+        <div id="btn" class="flex m-4">
+            <button id="case-number-search-btn" class="font-extrabold bg-slate-200 text-gray-700 bg-indigo-600 text-white px-4 py-2 rounded-l w-56">Case Number Search</button>
+            <button id="common-texts-btn" class="font-extrabold bg-slate-200 text-gray-700 px-4 py-2 rounded-r w-56">Common Texts<button>
+        </div>
+        <div id="case-number-search" class="flex m-4">
+            <div class="flex flex-col">
+                <label for="input" class="font-extrabold text-gray-700">Case Number</label>
+                <input id="input" name="input" class="w-48 px-2 py-1 rounded border-2 outline-none transition-colors active:border-indigo-600 focus:border-indigo-600" />
+            </div>
+            <div class="flex flex-col ml-8">
+                <p class="font-extrabold text-gray-700">Ctrl+Space Shortcut</p>
+                <div class="h-8 w-16 px-1 transition-colors rounded-full bg-slate-300 flex items-center" id="switch">
+                    <div class="rounded-full w-6 h-6 bg-white"></div>
+                </div>
+            </div>
+        </div>
+        <div id="common-texts" class="hidden">
+            <p>New Feature Soon. Create Custom Text Templates Like "I found your case under: {caseTitle}"</p>
+        </div>
+        <script src="./index.js"></script>
+    </body>
+</html>
