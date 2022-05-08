@@ -28,8 +28,6 @@ const renderPage = async () => {
   const odyssey = document.createElement("odyssey-html");
   // @ts-ignore
   odyssey.odysseyHTML = html;
-  // @ts-ignore
-  odyssey.render();
   rootEl.innerHTML = "";
   rootEl.appendChild(odyssey);
 };
