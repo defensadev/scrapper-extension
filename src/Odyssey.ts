@@ -14,6 +14,10 @@ class Odyssey extends HTMLElement {
 
   render() {
     this.shadow.innerHTML = this.odysseyHTML;
+    const els = document.getElementsByClassName("loadingmessagediv");
+    for (let i = 0; i < els.length; i++) {
+      els[i].remove();
+    }
   }
 }
 
