@@ -1,5 +1,5 @@
-import * as sanitizeHtml from "sanitize-html";
 import { $ } from "../extension-src/utils";
+import Odyssey from "./Odyssey";
 
 const getParams = () => {
   return new URLSearchParams(window.location.search);
@@ -20,11 +20,18 @@ const renderPage = async () => {
 
   const url = `https://ihaucbf8v2.execute-api.us-east-1.amazonaws.com/harris?caseNumber=${caseNumber}`;
   const res = await fetch(url).then((res) => res.text());
-  const html = sanitizeHtml.default(res);
+  const html = res.replace(
+    /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+    ""
+  );
 
-  const dom = new DOMParser().parseFromString(html, "text/html");
+  const odyssey = document.createElement("odyssey-html");
+  // @ts-ignore
+  odyssey.odysseyHTML = html;
+  // @ts-ignore
+  odyssey.render();
   rootEl.innerHTML = "";
-  rootEl.appendChild(dom.body);
+  rootEl.appendChild(odyssey);
 };
 
 const main = () => {
@@ -38,6 +45,8 @@ const main = () => {
     return;
   }
   caseNumberEl.value = caseNumber;
+
+  customElements.define("odyssey-html", Odyssey);
 
   renderPage();
 };
