@@ -1,10 +1,6 @@
 import { $ } from "../extension-src/utils";
 import Odyssey from "./Odyssey";
 
-const getParams = () => {
-  return new URLSearchParams(window.location.search);
-};
-
 const getCounty = (caseNumber: string): string => {
   const countyEl = $<HTMLInputElement>("county");
   if (countyEl.value) {
@@ -77,7 +73,9 @@ const main = () => {
     ev.key === "Enter" && caseNumberEl.value.length > 0 && renderPage();
   };
 
-  const caseNumber = getParams().get("caseNumber");
+  const caseNumber = new URLSearchParams(window.location.search).get(
+    "caseNumber"
+  );
   if (!caseNumber) {
     return;
   }
