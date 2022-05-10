@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node scripts/dist/start",
     "build": "tsc --noEmit && node scripts/dist/build",
-    "scripts-build": "tsc --noEmit && node scripts/scripts-build.js"
+    "scripts-build": "tsc --noEmit && node scripts/scripts-build.js",
+    "deploy": "yarn build && git add . && git commit -m 'added county input' && git push -u origin main"
   },
   "devDependencies": {
     "@esbuild-plugins/node-resolve": "^0.1.4",
