@@ -6,12 +6,17 @@ const getParams = () => {
 };
 
 const getCounty = (caseNumber: string): string => {
+  const countyEl = $<HTMLInputElement>("county");
+  if (countyEl.value) {
+    return countyEl.value.toLowerCase();
+  }
   if (/^[0-9]+$/.test(caseNumber)) {
     return "harris";
   }
   if (/^JP[0-9]+-[0-9]+-E.+$/.test(caseNumber)) {
     return "tarrant";
   }
+
   throw new Error(`Could not recognize county for case number ${caseNumber}`);
 };
 
@@ -61,9 +66,15 @@ const renderPage = async () => {
 };
 
 const main = () => {
+  customElements.define("odyssey-html", Odyssey);
+
   const caseNumberEl = $<HTMLInputElement>("case-number");
   caseNumberEl.onkeydown = (ev) => {
     ev.key === "Enter" && renderPage();
+  };
+  const countyEl = $<HTMLInputElement>("county");
+  countyEl.onkeydown = (ev) => {
+    ev.key === "Enter" && caseNumberEl.value.length > 0 && renderPage();
   };
 
   const caseNumber = getParams().get("caseNumber");
@@ -71,8 +82,6 @@ const main = () => {
     return;
   }
   caseNumberEl.value = caseNumber;
-
-  customElements.define("odyssey-html", Odyssey);
 
   renderPage();
 };
