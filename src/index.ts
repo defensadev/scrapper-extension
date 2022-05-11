@@ -43,6 +43,7 @@ const renderPage = async (err: Error | null) => {
     }
 
     const errEl = document.createElement("p");
+
     errEl.className = "text-red-500";
     errEl.innerText = err.message;
 

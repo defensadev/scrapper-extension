@@ -16,6 +16,13 @@ const getParams = () => {
 
 const syncParams = () => {
   if (state.caseNumber || state.county) {
+    if (state.caseNumber === undefined) {
+      delete state.caseNumber;
+    }
+    if (state.county === undefined) {
+      delete state.county;
+    }
+
     // @ts-ignore
     const pms = new URLSearchParams(state).toString();
     history.pushState({}, "", "?" + pms);
