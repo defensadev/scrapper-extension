@@ -53,11 +53,11 @@ const getCounty = (caseNumber: string): string | undefined => {
 const UI = (): Error | null => {
   getParams();
   getInputs();
-  syncParams();
-  syncInputs();
   state.county = state.county
     ? state.county
     : state.caseNumber && getCounty(state.caseNumber);
+  syncParams();
+  syncInputs();
 
   if (state.county && state.caseNumber) {
     if (
