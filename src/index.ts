@@ -96,9 +96,11 @@ const main = () => {
     ev.key === "Enter" && caseNumberEl.value.length > 0 && countyEl.blur();
   };
 
-  const caseNumber = new URLSearchParams(window.location.search).get(
-    "caseNumber"
-  );
+  const params = new URLSearchParams(window.location.search);
+  const [caseNumber, county] = [params.get("caseNumber"), params.get("county")];
+  if (county) {
+    countyEl.value = county;
+  }
   if (!caseNumber) {
     return;
   }
