@@ -1,51 +1,16 @@
 import { $ } from "../extension-src/utils";
 import Odyssey from "./Odyssey";
+import UI from "./UI";
+import { onReadyState, state } from "./state";
 
-interface Counties {
-  [key: string]: RegExp;
-}
-
-const counties: Counties = {
-  harris: /^[0-9]+$/,
-  tarrant: /^JP[0-9]+-[0-9]+-E.+$/,
-  fortbend: /^[0-9]+-JEV[0-9]+-[0-9]+$/,
-};
-
-const getCounty = (caseNumber: string): string => {
-  const countyEl = $<HTMLInputElement>("county");
-  if (countyEl.value) {
-    return countyEl.value.toLowerCase();
-  }
-  for (const county in counties) {
-    const re = counties[county];
-    if (re.test(caseNumber)) {
-      return county;
-    }
-  }
-
-  throw new Error(`Could not recognize county for case number ${caseNumber}`);
-};
-
-const state = {
-  caseNumber: "",
-  county: "",
-};
-
-const renderPage = async () => {
-  const caseNumber = $<HTMLInputElement>("case-number").value;
-  if (!caseNumber) {
-    return;
-  }
+const renderPage = async (err: Error | null) => {
   const rootEl = $("root");
 
   try {
-    const county = getCounty(caseNumber);
-    if (county === state.county && caseNumber === state.caseNumber) {
-      return;
+    const { county, caseNumber } = state;
+    if (!county || !caseNumber || err) {
+      throw err;
     }
-    state.caseNumber = caseNumber;
-    state.county = county;
-    history.pushState({}, "", `?caseNumber=${caseNumber}&county=${county}`);
 
     const loadingNode = document.createElement("div");
     loadingNode.className = "m-4 font-extrabold text-gray-700";
@@ -73,6 +38,10 @@ const renderPage = async () => {
     rootEl.innerHTML = "";
     rootEl.appendChild(odyssey);
   } catch (err) {
+    if (err.message === "prevState") {
+      return;
+    }
+
     const errEl = document.createElement("p");
     errEl.className = "text-red-500";
     errEl.innerText = err.message;
@@ -86,27 +55,19 @@ const main = () => {
   customElements.define("odyssey-html", Odyssey);
 
   const caseNumberEl = $<HTMLInputElement>("case-number");
-  caseNumberEl.onblur = () => renderPage();
+  const countyEl = $<HTMLInputElement>("county");
+
+  caseNumberEl.onblur = () => renderPage(UI());
+  countyEl.onblur = () => renderPage(UI());
+
   caseNumberEl.onkeydown = (ev) => {
     ev.key === "Enter" && caseNumberEl.blur();
   };
-  const countyEl = $<HTMLInputElement>("county");
-  countyEl.onblur = () => renderPage();
   countyEl.onkeydown = (ev) => {
     ev.key === "Enter" && caseNumberEl.value.length > 0 && countyEl.blur();
   };
 
-  const params = new URLSearchParams(window.location.search);
-  const [caseNumber, county] = [params.get("caseNumber"), params.get("county")];
-  if (county) {
-    countyEl.value = county;
-  }
-  if (!caseNumber) {
-    return;
-  }
-  caseNumberEl.value = caseNumber;
-
-  renderPage();
+  renderPage(UI());
 };
 
-main();
+onReadyState().then(() => main());
