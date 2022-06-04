@@ -11,6 +11,10 @@ export const counties: Counties = {
   harris: /^[0-9]+$/,
   tarrant: /^JP[0-9]+-[0-9]+-E.+$/,
   fortbend: /^[0-9]+-JEV[0-9]+-[0-9]+$/,
+  denton: /E[0-9]+-[0-9]+J[0-9]+/,
+  collin: /[0-9]+-EV-[0-9]+-[0-9]+/,
+  galveston: /[0-9]+-EV[0-9]+-[0-9]+/,
+  travis: /.[0-9]+-.V-[0-9]+/,
 };
 
 export const state: State = {};

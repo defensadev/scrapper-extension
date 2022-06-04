@@ -2,6 +2,7 @@ import { $ } from "../extension-src/utils";
 import Odyssey from "./Odyssey";
 import UI from "./UI";
 import { onReadyState, state } from "./state";
+import imageDownloadMain from "./imageDownload";
 
 const renderPage = async (err: Error | null) => {
   const rootEl = $("root");
@@ -37,6 +38,8 @@ const renderPage = async (err: Error | null) => {
 
     rootEl.innerHTML = "";
     rootEl.appendChild(odyssey);
+
+    imageDownloadMain();
   } catch (err) {
     if (err.message === "prevState") {
       return;
